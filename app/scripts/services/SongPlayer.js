@@ -99,6 +99,22 @@
                 playSong(song);
             }
         };
+        /**
+         * @function SongPlayer.next
+         * @desc Plays next track in index. 
+        */  
+         SongPlayer.next = function() {
+            var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+            currentSongIndex++;
+            if (currentSongIndex >= currentAlbum.songs.length) {
+                currentBuzzObject.stop();
+                SongPlayer.currentSong.playing = null;
+            } else {
+                var song = currentAlbum.songs[currentSongIndex];
+                setSong(song);
+                playSong(song);
+            }
+        };
         return SongPlayer;
      }
  
