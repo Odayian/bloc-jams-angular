@@ -49,6 +49,13 @@
                 return {width: percentString()};
             };
             /**
+            * @function thumbStyle
+            * @desc  
+            */  
+            scope.thumbStyle = function(){
+                return {left: percentString()};  
+            };
+            /**
             * @function onClickSeekBar
             * @desc  Updates the seek bar value based on the seek bar's width and the location of the user's click on the seek bar.
             */  
@@ -64,15 +71,15 @@
                 $document.bind('mousemove.thumb', function(event) {
                 var percent = calculatePercent(seekBar, event);
                 scope.$apply(function() {
-                scope.value = percent * scope.max;
-            });
-     });
+                    scope.value = percent * scope.max;
+                });
+                });
  
-     $document.bind('mouseup.thumb', function() {
-         $document.unbind('mousemove.thumb');
-         $document.unbind('mouseup.thumb');
-     });
- };
+                $document.bind('mouseup.thumb', function() {
+                    $document.unbind('mousemove.thumb');
+                    $document.unbind('mouseup.thumb');
+                });
+            };
         }
      };
     }
