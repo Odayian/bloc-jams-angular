@@ -145,6 +145,18 @@
             }
         };
         
+        
+        
+        SongPlayer.currentVolume = 60;
+        
+        SongPlayer.maxVolume = 100;
+        
+        SongPlayer.setVolume = function(volume){
+            if (currentBuzzObject) {
+                currentBuzzObject.setVolume(volume);
+            }
+        };
+        
         return SongPlayer;
      }
  
