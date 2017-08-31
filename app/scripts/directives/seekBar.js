@@ -14,7 +14,9 @@
          templateUrl: '/templates/directives/seek_bar.html',
          replace: true,
          restrict: 'E',
-         scope: { },
+         scope: { 
+            onChange: '&'
+         },
          link: function(scope, element, attributes) {
             /**
             * @desc Holds the value of the seek bar, such as the currently playing song time or the current volume. Default value is 0.t
@@ -31,6 +33,14 @@
             * @type {Object}
             */ 
             var seekBar = $(element);
+            
+            attributes.$observe('value', function(newValue) {
+                scope.value = newValue;
+            });
+            
+            attributes.$observe('max', function(newValue){
+                scope.max = newValue;
+            });
             /**
             * @function percentString
             * @desc  A function that calculates a percent based on the value and maximum value of a seek bar.
@@ -60,8 +70,9 @@
             * @desc  Updates the seek bar value based on the seek bar's width and the location of the user's click on the seek bar.
             */  
             scope.onClickSeekBar = function(event) {
-             var percent = calculatePercent(seekBar, event);
-             scope.value = percent * scope.max;
+                var percent = calculatePercent(seekBar, event);
+                scope.value = percent * scope.max;
+                notifyOnChange(scope.value);
             };
             /**
             * @function trackThumb
@@ -69,16 +80,23 @@
             */  
             scope.trackThumb = function() {
                 $document.bind('mousemove.thumb', function(event) {
-                var percent = calculatePercent(seekBar, event);
-                scope.$apply(function() {
-                    scope.value = percent * scope.max;
+                    var percent = calculatePercent(seekBar, event);
+                    scope.$apply(function() {
+                        scope.value = percent * scope.max;
+                        notifyOnChange(scope.value);
+                    });
                 });
-                });
- 
+
                 $document.bind('mouseup.thumb', function() {
                     $document.unbind('mousemove.thumb');
                     $document.unbind('mouseup.thumb');
                 });
+            };
+            
+            var notifyOnChange = function(newValue){
+                if(typeof scope.onChange === 'function'){
+                    scope.onChange({value: newValue});
+                }
             };
         }
      };
